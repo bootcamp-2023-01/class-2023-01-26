@@ -4,23 +4,27 @@ author: "David Kane"
 format: html
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
 
 ```{r}
 #| echo: false
-2 * 2
+#| output: false
+library(tidyverse)
+
+x <- read_rds("https://github.com/PPBDS/bootcamp/raw/master/_internal/ec.rds")
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+```{r}
+#| echo: false
+x |> 
+  drop_na() |> 
+  ggplot(aes(x = pop2018)) +
+    geom_histogram(bins = 100) +
+    scale_x_log10(labels = scales::comma_format()) +
+    labs(title = "US County Populations in 2018",
+         subtitle = "Populations are highly skewed",
+         x = "Population",
+         y = "Number of Counties",
+         caption = "Opportunity Insights")
+```
+
